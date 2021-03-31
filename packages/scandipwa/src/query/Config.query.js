@@ -100,6 +100,8 @@ export class ConfigQuery {
             'default_title',
             'default_description',
             'default_country',
+            'downloadable_disable_guest_checkout',
+            'downloadable_shareable',
             'secure_base_media_url',
             // 'paypal_sandbox_flag',
             // 'paypal_client_id',

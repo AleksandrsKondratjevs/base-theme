@@ -195,7 +195,8 @@ export class CartQuery {
     _getDownloadableLinksFields() {
         return [
             'id',
-            'label'
+            'label',
+            'is_shareable'
         ];
     }
 
