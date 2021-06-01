@@ -103,22 +103,6 @@ export const getIndexedVariants = (variants) => variants.map(({ product }) => {
     };
 });
 
-/** @namespace Util/Product/getIndexedSingleVariant */
-export const getIndexedSingleVariant = (variants, itemSku) => {
-    const index = variants.findIndex(({ product: { sku } }) => sku === itemSku || itemSku.includes(sku));
-
-    if (index < 0) {
-        return getIndexedVariants(variants);
-    }
-
-    const indexedProduct = variants[index].product;
-    const { attributes } = indexedProduct;
-
-    return [
-        { ...indexedProduct, attributes: getIndexedAttributes(attributes || []) }
-    ];
-};
-
 /**
  * Get product variant index by options
  * @param {Object[]} variants
@@ -235,7 +219,7 @@ export const getBundleOptions = (options, items) => {
 
     return items.map((item) => ({
         ...item,
-        options: item?.options?.map((option) => {
+        options: item.options.map((option) => {
             const selection = bundleOptions.find((o) => o.selection_id === option.id) || {};
             const {
                 regular_option_price: regularOptionPrice = 0,
@@ -256,7 +240,7 @@ export const getBundleOptions = (options, items) => {
 };
 
 /** @namespace Util/Product/getIndexedProduct */
-export const getIndexedProduct = (product, itemSku) => {
+export const getIndexedProduct = (product) => {
     const {
         variants: initialVariants = [],
         configurable_options: initialConfigurableOptions = [],
@@ -275,7 +259,7 @@ export const getIndexedProduct = (product, itemSku) => {
     const updatedProduct = {
         ...product,
         configurable_options: getIndexedConfigurableOptions(initialConfigurableOptions, attributes),
-        variants: itemSku ? getIndexedSingleVariant(initialVariants, itemSku) : getIndexedVariants(initialVariants),
+        variants: getIndexedVariants(initialVariants),
         options: getIndexedCustomOptions(initialOptions || []),
         attributes,
         // Magento 2.4.1 review endpoint compatibility
@@ -294,7 +278,7 @@ export const getIndexedProduct = (product, itemSku) => {
 };
 
 /** @namespace Util/Product/getIndexedProducts */
-export const getIndexedProducts = (products) => products.map((product) => getIndexedProduct(product));
+export const getIndexedProducts = (products) => products.map(getIndexedProduct);
 
 /** @namespace Util/Product/getIndexedParameteredProducts */
 export const getIndexedParameteredProducts = (products) => Object.entries(products)

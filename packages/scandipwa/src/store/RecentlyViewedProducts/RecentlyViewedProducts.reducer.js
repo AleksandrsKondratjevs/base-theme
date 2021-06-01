@@ -14,16 +14,13 @@ import {
     RECENTLY_VIEWED_PRODUCTS
 } from 'Component/RecentlyViewedWidget/RecentlyViewedWidget.config';
 import {
-    ADD_RECENTLY_VIEWED_PRODUCT,
     UPDATE_RECENTLY_VIEWED_PRODUCTS
 } from 'Store/RecentlyViewedProducts/RecentlyViewedProducts.action';
 import BrowserDatabase from 'Util/BrowserDatabase';
-import { getIndexedProducts } from 'Util/Product';
 
 /** @namespace Store/RecentlyViewedProducts/Reducer/getInitialState */
 export const getInitialState = () => ({
-    recentlyViewedProducts: BrowserDatabase.getItem(RECENTLY_VIEWED_PRODUCTS) || {},
-    shouldBeUpdated: true
+    recentlyViewedProducts: BrowserDatabase.getItem(RECENTLY_VIEWED_PRODUCTS) || {}
 });
 
 /** @namespace Store/RecentlyViewedProducts/Reducer/recentlyViewedProductsReducer */
@@ -32,7 +29,7 @@ export const RecentlyViewedProductsReducer = (
     action
 ) => {
     switch (action.type) {
-    case ADD_RECENTLY_VIEWED_PRODUCT:
+    case UPDATE_RECENTLY_VIEWED_PRODUCTS:
         const {
             product,
             product: { sku: newSku }
@@ -57,38 +54,8 @@ export const RecentlyViewedProductsReducer = (
 
         BrowserDatabase.setItem(newRecentProducts, RECENTLY_VIEWED_PRODUCTS);
 
-        return {
-            ...state,
-            recentlyViewedProducts: newRecentProducts,
-            shouldBeUpdated: true
-        };
+        return { ...state, recentlyViewedProducts: newRecentProducts };
 
-    case UPDATE_RECENTLY_VIEWED_PRODUCTS:
-        const {
-            products,
-            storeCode
-        } = action;
-        const { recentlyViewedProducts: recent = {} } = state;
-
-        const indexedProducts = getIndexedProducts(products);
-        const recentProductsFromStorage = BrowserDatabase.getItem(RECENTLY_VIEWED_PRODUCTS) || [];
-
-        // Sort products same as it is localstorage recentlyViewedProducts
-        const sortedRecentProducts = recentProductsFromStorage[storeCode].reduce((acc, { sku }) => {
-            const sortedProduct = indexedProducts.find((item) => item.sku === sku);
-            return [...acc, sortedProduct];
-        }, []);
-
-        const updatedRecentViewedProducts = {
-            ...recent,
-            [storeCode]: sortedRecentProducts
-        };
-
-        return {
-            ...state,
-            recentlyViewedProducts: updatedRecentViewedProducts,
-            shouldBeUpdated: false
-        };
     default:
         return state;
     }

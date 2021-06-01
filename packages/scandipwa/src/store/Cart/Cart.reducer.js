@@ -22,8 +22,8 @@ export const updateCartTotals = (action) => {
 
     if (Object.hasOwnProperty.call(cartTotals, 'items')) {
         const normalizedItemsProduct = cartTotals.items.map((item) => {
-            const { variants, ...normalizedItem } = item;
-            normalizedItem.product = getIndexedProduct(item.product, item.sku);
+            const normalizedItem = item;
+            normalizedItem.product = getIndexedProduct(item.product);
 
             return normalizedItem;
         });

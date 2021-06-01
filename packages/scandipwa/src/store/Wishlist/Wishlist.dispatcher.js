@@ -60,7 +60,7 @@ export class WishlistDispatcher {
         return fetchQuery(WishlistQuery.getWishlistQuery()).then(
             /** @namespace Store/Wishlist/Dispatcher/_syncWishlistWithBEFetchQueryThen */
             (data) => {
-                if (data && data.wishlist) {
+                if (data && data.wishlist && data.wishlist.items_count) {
                     const { wishlist } = data;
                     const productsToAdd = wishlist.items.reduce((prev, wishlistItem) => {
                         const {
@@ -165,7 +165,7 @@ export class WishlistDispatcher {
             .then(
                 /** @namespace Store/Wishlist/Dispatcher/moveWishlistToCartFetchMutationThen */
                 () => {
-                    this._syncWishlistWithBE(dispatch);
+                    dispatch(clearWishlist());
                     CartDispatcher.then(
                         ({ default: dispatcher }) => dispatcher.updateInitialCartData(dispatch)
                     );

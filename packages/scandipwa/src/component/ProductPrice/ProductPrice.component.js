@@ -31,10 +31,8 @@ export class ProductPrice extends PureComponent {
         discountPercentage: PropTypes.number,
         formattedFinalPrice: PropTypes.string,
         formattedSubPrice: PropTypes.string,
-        defaultFinalPriceExclTax: PropTypes.number,
         variantsCount: PropTypes.number,
         price: PriceType,
-        formattedDefaultFinalPriceExclTax: PropTypes.number,
         mix: MixType,
         label: PropTypes.string,
         price_tiers: PropTypes.array
@@ -44,12 +42,10 @@ export class ProductPrice extends PureComponent {
         isSchemaRequired: false,
         roundedRegularPrice: '0',
         priceCurrency: 'USD',
-        defaultFinalPriceExclTax: 0,
         discountPercentage: 0,
         formattedFinalPrice: '0',
         formattedSubPrice: null,
         variantsCount: 0,
-        formattedDefaultFinalPriceExclTax: 0,
         mix: {},
         price: {},
         label: '',
@@ -137,9 +133,8 @@ export class ProductPrice extends PureComponent {
 
     renderOldPrice() {
         const {
+            roundedRegularPrice,
             discountPercentage,
-            formattedDefaultFinalPriceExclTax,
-            defaultFinalPriceExclTax,
             isSchemaRequired,
             variantsCount,
             price_tiers,
@@ -148,12 +143,7 @@ export class ProductPrice extends PureComponent {
 
         const schema = isSchemaRequired && variantsCount > 1 ? { itemProp: 'highPrice' } : {};
 
-        if (
-          discountPercentage === 0
-          || defaultFinalPriceExclTax === 0
-          || price_tiers.length
-          || label
-        ) {
+        if (discountPercentage === 0 || price_tiers.length || label) {
             return null;
         }
 
@@ -164,7 +154,7 @@ export class ProductPrice extends PureComponent {
               aria-label={ __('Old product price') }
               { ...schema }
             >
-                { formattedDefaultFinalPriceExclTax }
+                { roundedRegularPrice }
             </del>
         );
     }

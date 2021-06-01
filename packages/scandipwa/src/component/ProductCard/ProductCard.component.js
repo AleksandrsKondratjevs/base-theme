@@ -58,9 +58,7 @@ export class ProductCard extends PureComponent {
         siblingsHavePriceBadge: PropTypes.bool,
         setSiblingsHavePriceBadge: PropTypes.func,
         siblingsHaveConfigurableOptions: PropTypes.bool,
-        setSiblingsHaveConfigurableOptions: PropTypes.func,
         layout: PropTypes.string,
-        isPreview: PropTypes.bool.isRequired,
         updateConfigurableVariant: PropTypes.func.isRequired,
         configurableVariantIndex: PropTypes.number,
         parameters: PropTypes.shape({}).isRequired
@@ -175,95 +173,6 @@ export class ProductCard extends PureComponent {
                   mix={ { block: 'ProductCard', elem: 'Price' } }
                   label={ this.renderProductTypePriceBadge() }
                 />
-            </div>
-        );
-    }
-
-    renderTierPrice() {
-        const {
-            productOrVariant,
-            siblingsHaveTierPrice,
-            setSiblingsHaveTierPrice
-        } = this.props;
-        const { price_tiers } = productOrVariant;
-
-        if (!price_tiers || !price_tiers.length) {
-            return null;
-        }
-
-        if (!siblingsHaveTierPrice) {
-            setSiblingsHaveTierPrice();
-        }
-
-        return (
-            <TierPrices
-              product={ productOrVariant }
-              isLowestPrice
-            />
-        );
-    }
-
-    renderImageVisualOption(label, value, i) {
-        return (
-          <img
-            key={ i }
-            block="ProductCard"
-            elem="Image"
-            src={ `/media/attribute/swatch/swatch_thumb/110x90${value}` }
-            alt={ label }
-          />
-        );
-    }
-
-    renderVisualOption = ({ label, value, type }, i) => {
-        if (type === OPTION_TYPE_IMAGE) {
-            return this.renderImageVisualOption(label, value, i);
-        }
-
-        const isColor = type === OPTION_TYPE_COLOR;
-
-        return (
-            <span
-              block="ProductCard"
-              elem={ isColor ? 'Color' : 'String' }
-              key={ i }
-              style={ isColor ? { backgroundColor: value } : {} }
-              aria-label={ isColor ? label : '' }
-              title={ isColor ? '' : label }
-            >
-                { isColor ? '' : value }
-            </span>
-        );
-    };
-
-    renderVisualConfigurableOptions() {
-        const {
-            siblingsHaveConfigurableOptions,
-            setSiblingsHaveConfigurableOptions,
-            availableVisualOptions,
-            device,
-            isPreview
-        } = this.props;
-
-        if (isPreview) {
-            return <TextPlaceholder />;
-        }
-
-        if (device.isMobile || !availableVisualOptions.length) {
-            return <div block="ProductCard" elem="ConfigurableOptions" />;
-        }
-
-        if (!validOptionTypes.includes(availableVisualOptions[0].type)) {
-            return <div block="ProductCard" elem="ConfigurableOptions" />;
-        }
-
-        if (!siblingsHaveConfigurableOptions) {
-            setSiblingsHaveConfigurableOptions();
-        }
-
-        return (
-            <div block="ProductCard" elem="ConfigurableOptions">
-                { availableVisualOptions.map(this.renderVisualOption) }
             </div>
         );
     }
@@ -413,18 +322,6 @@ export class ProductCard extends PureComponent {
     }
 
     renderMainDetails() {
-        const { layout } = this.props;
-
-        if (layout === GRID_LAYOUT) {
-            return this.renderProductName();
-        }
-
-        return this.renderCardLinkWrapper(
-            this.renderProductName()
-        );
-    }
-
-    renderProductName() {
         const { product: { name } } = this.props;
 
         return (

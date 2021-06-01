@@ -25,8 +25,7 @@ export class MyAccountCreateAccount extends PureComponent {
         onCreateAccountSuccess: PropTypes.func.isRequired,
         handleSignIn: PropTypes.func.isRequired,
         showTaxVatNumber: PropTypes.string.isRequired,
-        vatNumberValidation: PropTypes.array.isRequired,
-        newsletterActive: PropTypes.bool.isRequired
+        vatNumberValidation: PropTypes.array.isRequired
     };
 
     renderVatNumberField() {
@@ -47,21 +46,7 @@ export class MyAccountCreateAccount extends PureComponent {
         );
     }
 
-    renderSubscribeToNewsletter() {
-        return (
-            <Field
-              type="checkbox"
-              value="is_subscribed"
-              label={ __('Subscribe to newsletter') }
-              id="is_subscribed"
-              mix={ { block: 'MyAccountOverlay', elem: 'Checkbox' } }
-              name="is_subscribed"
-            />
-        );
-    }
-
     renderCreateAccountPersonalInfoFields() {
-        const { newsletterActive } = this.props;
         const { location: { state: { firstName = '', lastName = '' } = {} } } = history;
 
         return (
@@ -86,7 +71,14 @@ export class MyAccountCreateAccount extends PureComponent {
                   validation={ ['notEmpty'] }
                 />
                 { this.renderVatNumberField() }
-                { newsletterActive ? this.renderSubscribeToNewsletter() : null }
+                <Field
+                  type="checkbox"
+                  value="is_subscribed"
+                  label={ __('Subscribe to newsletter') }
+                  id="is_subscribed"
+                  mix={ { block: 'MyAccountOverlay', elem: 'Checkbox' } }
+                  name="is_subscribed"
+                />
             </fieldset>
         );
     }
