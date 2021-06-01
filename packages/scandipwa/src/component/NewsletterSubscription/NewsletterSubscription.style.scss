@@ -17,7 +17,7 @@
 
 .NewsletterSubscription {
     min-width: 230px;
-    padding: 0 1rem;
+    padding: 0 10px;
 
     @include desktop {
         padding: 0;
@@ -35,7 +35,7 @@
 
             .Field {
                 width: 100%;
-                margin-top: 0;
+                margin-block-start: 0;
 
                 &-Message {
                     position: absolute;
@@ -53,14 +53,14 @@
                 &_hasError {
                     input {
                         border: 1px solid var(--primary-error-color);
-                        border-right: 0;
+                        border-inline-end: 0;
                     }
                 }
             }
         }
 
         &-Fields {
-            margin-bottom: 0;
+            margin-block-end: 0;
         }
 
         &-Button {
@@ -80,7 +80,7 @@
 
     .Form {
         &_isInvalid {
-            margin-bottom: 1.8rem;
+            margin-block-end: 18px;
         }
     }
 }

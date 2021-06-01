@@ -27,6 +27,7 @@ import {
 import { CategoryTreeType } from 'Type/Category';
 import { HistoryType, LocationType, MatchType } from 'Type/Common';
 import BrowserDatabase from 'Util/BrowserDatabase';
+import { getFiltersCount } from 'Util/Category';
 import { debounce } from 'Util/Request';
 import {
     appendWithStoreCode,
@@ -133,14 +134,16 @@ export class CategoryPageContainer extends PureComponent {
             })
         }),
         selectedInfoFilter: PropTypes.shape({
-            categoryIds: PropTypes.number
+            categoryIds: PropTypes.number,
+            customFilters: PropTypes.objectOf(PropTypes.array)
         }),
         isInfoLoading: PropTypes.bool.isRequired,
         isOffline: PropTypes.bool.isRequired,
         categoryIds: PropTypes.number,
         isSearchPage: PropTypes.bool,
         isMobile: PropTypes.bool.isRequired,
-        plpType: PropTypes.string
+        plpType: PropTypes.string,
+        device: PropTypes.shape({}).isRequired
     };
 
     static defaultProps = {
@@ -391,6 +394,14 @@ export class CategoryPageContainer extends PureComponent {
         return categoryIds === selectedCategoryIds;
     }
 
+    getAppliedFiltersCount() {
+        const {
+            selectedInfoFilter: { customFilters = {} }
+        } = this.props;
+
+        return getFiltersCount(customFilters);
+    }
+
     isCurrentCategoryLoaded() {
         const {
             categoryIds,
@@ -408,6 +419,7 @@ export class CategoryPageContainer extends PureComponent {
         isCurrentCategoryLoaded: this.isCurrentCategoryLoaded(),
         isMatchingListFilter: this.getIsMatchingListFilter(),
         isMatchingInfoFilter: this.getIsMatchingInfoFilter(),
+        appliedFiltersCount: this.getAppliedFiltersCount(),
         selectedSort: this.getSelectedSortFromUrl(),
         selectedFilters: this.getSelectedFiltersFromUrl(),
         isContentFiltered: this.isContentFiltered(),

@@ -23,6 +23,8 @@ import { shippingMethodsType, shippingMethodType } from 'Type/Checkout';
 import { TotalsType } from 'Type/MiniCart';
 import { formatPrice } from 'Util/Price';
 
+import './CheckoutShipping.style';
+
 /** @namespace Component/CheckoutShipping/Component */
 export class CheckoutShipping extends PureComponent {
     static propTypes = {
@@ -37,13 +39,33 @@ export class CheckoutShipping extends PureComponent {
         onStoreSelect: PropTypes.func.isRequired,
         isLoading: PropTypes.bool.isRequired,
         estimateAddress: addressType.isRequired,
-        selectedStoreAddress: addressType
+        selectedStoreAddress: addressType,
+        cartTotalSubPrice: PropTypes.number.isRequired
     };
 
     static defaultProps = {
         selectedShippingMethod: null,
         selectedStoreAddress: {}
     };
+
+    renderOrderTotalExclTax() {
+        const { cartTotalSubPrice } = this.props;
+
+        if (!cartTotalSubPrice) {
+            return null;
+        }
+
+        return (
+            <span block="Checkout" elem="SubPrice">
+                { __('Excl. tax: %s', this.renderPriceLine(cartTotalSubPrice)) }
+            </span>
+        );
+    }
+
+    renderPriceLine(price) {
+        const { totals: { quote_currency_code } } = this.props;
+        return formatPrice(price, quote_currency_code);
+    }
 
     renderOrderTotal() {
         const {
@@ -56,14 +78,13 @@ export class CheckoutShipping extends PureComponent {
         const orderTotal = formatPrice(grand_total, quote_currency_code);
 
         return (
-            <div block="Checkout" elem="OrderTotal">
-                <span>
-                    { __('Order total:') }
-                </span>
-                <span>
+            <dl block="Checkout" elem="OrderTotal">
+                <dt>{ __('Order total') }</dt>
+                <dd block="Checkout" elem="TotalValue">
                     { orderTotal }
-                </span>
-            </div>
+                    { this.renderOrderTotalExclTax() }
+                </dd>
+            </dl>
         );
     }
 
@@ -81,6 +102,7 @@ export class CheckoutShipping extends PureComponent {
                       || (method_code === STORE_IN_PICK_UP_METHOD_CODE && !Object.keys(selectedStoreAddress).length) }
                   mix={ { block: 'CheckoutShipping', elem: 'Button' } }
                 >
+                    <span />
                     { __('Proceed to billing') }
                 </button>
             </div>

@@ -11,20 +11,17 @@
 
 .CategorySort {
     @include desktop {
-        margin-left: auto;
-        min-width: 18rem;
+        margin-inline-start: auto;
+        min-width: 180px;
         grid-column: 2;
     }
 
     &-Select {
-        margin-top: 0;
+        margin-block-start: 0;
 
         label:first-of-type {
-            @include before-desktop {
-                font-weight: 600;
-                font-size: 1.6rem;
-                padding-bottom: 3px;
-            }
+            font-size: 16px;
+            font-weight: 400;
 
             @include desktop {
                 display: none;
@@ -33,29 +30,52 @@
     }
 
     &-Placeholder {
-        text-align: right;
+        text-align: end;
         opacity: 0;
         animation: appear 100ms 300ms forwards;
 
         @include mobile {
-            text-align: left;
+            text-align: start;
         }
     }
 
     .FieldSelect {
         &::after {
+            height: 16px;
+            width: 16px;
+
             @include before-desktop {
-                left: 55px;
-                top: -22px;
+                inset-inline-start: 42px;
+                top: -32px;
             }
         }
 
         &-Select {
+            background: none;
+            border: none;
+            color: var(--color-black);
+            padding-block: 13px;
+            padding-inline: 20px 40px;
+
             @include before-desktop {
                 position: absolute;
                 top: -35px;
                 opacity: 0;
             }
+
+            &_isExpanded {
+                border: 1px solid var(--input-border-color);
+                border-block-end: 0;
+                font-weight: 700;
+            }
         }
+
+        //&-Options {
+        //    border-color: transparent;
+        //}
+        //
+        //&-Option {
+        //    background-color: transparent;
+        //}
     }
 }

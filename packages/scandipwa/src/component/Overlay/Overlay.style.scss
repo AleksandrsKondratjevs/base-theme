@@ -25,7 +25,7 @@
     z-index: 10;
     opacity: 0;
 
-    background-color: var(--overlay-background);
+    background-color: var(--overlay-content-background);
 
     &:not(.Overlay_isStatic) {
         @include before-desktop {
@@ -33,10 +33,10 @@
 
             position: fixed;
             top: var(--header-total-height);
-            left: 0;
+            inset-inline-start: 0;
             width: 100%;
             height: calc(100% - var(--header-total-height));
-            padding-bottom: var(--navigation-tabs-height);
+            padding-block-end: var(--navigation-tabs-height);
             overflow: scroll;
             overflow-x: hidden;
             max-width: 100%;

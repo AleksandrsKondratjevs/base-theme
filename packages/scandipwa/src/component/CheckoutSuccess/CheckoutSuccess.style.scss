@@ -1,7 +1,6 @@
 .CheckoutSuccess {
     @include mobile {
-        margin-top: 2.8rem;
-        text-align: center;
+        margin-block-start: 28px;
     }
 
     &-ContinueButton {
@@ -10,18 +9,18 @@
         }
 
         @include after-mobile {
-            margin-top: 2.4rem;
+            margin-block-start: 24px;
         }
     }
 
     &-ButtonWrapper {
         @include mobile {
-            padding: 1.4rem;
+            padding: 14px;
             position: fixed;
-            left: 0;
+            inset-inline-start: 0;
             width: 100%;
             bottom: var(--navigation-tabs-height);
-            border-top: 1px solid var(--primary-divider-color);
+            border-block-start: 1px solid var(--primary-divider-color);
         }
     }
 
@@ -33,6 +32,6 @@
     }
 
     .CheckoutRegistrationLink {
-        margin-top: 2rem;
+        margin-block-start: 20px;
     }
 }

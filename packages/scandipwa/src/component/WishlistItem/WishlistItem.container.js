@@ -69,7 +69,9 @@ export class WishlistItemContainer extends PureComponent {
 
     containerFunctions = {
         addToCart: this.addItemToCart.bind(this),
-        removeItem: this.removeItem.bind(this, false, true)
+        removeItem: this.removeItem.bind(this, false, true),
+        toggleOptionVisibility: this.toggleOptionVisibility.bind(this),
+        redirectToProductPage: this.redirectToProductPage.bind(this)
     };
 
     state = {
@@ -184,6 +186,12 @@ export class WishlistItemContainer extends PureComponent {
         handleSelectIdChange(item_id, isRemoveOnly);
 
         return removeFromWishlist({ item_id, noMessages });
+    }
+
+    redirectToProductPage() {
+        const { product: { url } } = this.props;
+
+        history.push({ pathname: appendWithStoreCode(url) });
     }
 
     renderRightSideContent = () => (

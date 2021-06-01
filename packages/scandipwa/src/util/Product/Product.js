@@ -9,12 +9,17 @@
  * @link https://github.com/scandipwa/base-theme
  */
 
+import { REVIEW_POPUP_ID } from 'Component/ProductReviews/ProductReviews.config';
+import { showNotification } from 'Store/Notification/Notification.action';
+import { showPopup } from 'Store/Popup/Popup.action';
+import { isSignedIn } from 'Util/Auth';
 import {
     BUNDLE,
     CONFIGURABLE,
     DOWNLOADABLE,
     SIMPLE
 } from 'Util/Product';
+import getStore from 'Util/Store';
 
 /**
  * Checks whether every option is in attributes
@@ -281,7 +286,7 @@ export const getIndexedProduct = (product, itemSku) => {
         }
     };
 
-    if (bundle_options) {
+    if (bundle_options.length) {
         updatedProduct.items = getBundleOptions(bundle_options, items);
     }
 
@@ -362,4 +367,42 @@ export const getExtensionAttributes = (product) => {
     }
 
     return {};
+};
+
+/** @namespace Util/Product/getIsConfigurableParameterSelected */
+// eslint-disable-next-line max-len
+export const getIsConfigurableParameterSelected = (parameters, key, value) => Object.hasOwnProperty.call(parameters, key) && parameters[key] === value;
+
+/** @namespace Util/Product/getNewParameters */
+export const getNewParameters = (parameters, key, value) => {
+    // If value is already selected, than we remove the key to achieve deselection
+    if (getIsConfigurableParameterSelected(parameters, key, value)) {
+        const { [key]: oldValue, ...newParameters } = parameters;
+
+        return newParameters;
+    }
+
+    return {
+        ...parameters,
+        [key]: value.toString()
+    };
+};
+
+/** @namespace Util/Product/showNewReviewPopup */
+export const showNewReviewPopup = () => {
+    const store = getStore();
+    const {
+        ConfigReducer: {
+            reviews_allow_guest: isGuestEnabled
+        } = {}
+    } = store.getState();
+    const { dispatch } = store;
+
+    // if not logged in and guest reviews are not enabled
+    if (!isSignedIn() && !isGuestEnabled) {
+        dispatch(showNotification('info', __('You must login or register to review products.')));
+        return;
+    }
+
+    dispatch(showPopup(REVIEW_POPUP_ID, { title: __('Write a review') }));
 };

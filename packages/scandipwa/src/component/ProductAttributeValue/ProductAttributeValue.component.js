@@ -33,7 +33,8 @@ export class ProductAttributeValue extends PureComponent {
         isAvailable: PropTypes.bool,
         mix: MixType,
         isFormattedAsText: PropTypes.bool,
-        isProductCountVisible: PropTypes.bool
+        isProductCountVisible: PropTypes.bool,
+        showProductAttributeAsLink: PropTypes.bool
     };
 
     static defaultProps = {
@@ -43,7 +44,8 @@ export class ProductAttributeValue extends PureComponent {
         mix: {},
         isAvailable: true,
         isFormattedAsText: false,
-        isProductCountVisible: false
+        isProductCountVisible: false,
+        showProductAttributeAsLink: true
     };
 
     clickHandler = this.clickHandler.bind(this);
@@ -70,13 +72,16 @@ export class ProductAttributeValue extends PureComponent {
             const optionValues = attribute_options[value];
             if (optionValues) {
                 if (!isProductCountVisible) {
-                    return optionValues;
+                    const { label } = optionValues;
+                    return { ...optionValues, labelText: label };
                 }
 
                 const { label, count = 0 } = optionValues;
                 return {
                     ...optionValues,
-                    label: `${label} (${count})`
+                    label: `${label} (${count})`,
+                    labelText: label,
+                    count
                 };
             }
         }
@@ -119,23 +124,25 @@ export class ProductAttributeValue extends PureComponent {
     renderSelectAttribute() {
         const { attribute: { attribute_value, attribute_code } } = this.props;
         const attributeOption = this.getOptionLabel(attribute_value);
-        const { label, swatch_data } = attributeOption;
+        const {
+            label, labelText, count, swatch_data
+        } = attributeOption;
 
         if (!swatch_data || STRING_ONLY_ATTRIBUTE_CODES.includes(attribute_code)) {
-            return this.renderStringValue(label || __('N/A'));
+            return this.renderStringValue(labelText || __('N/A'), null, count);
         }
 
         const { value, type } = swatch_data;
 
         switch (type) {
         case '0':
-            return this.renderStringValue(value, label);
+            return this.renderStringValue(value, labelText, count);
         case '1':
             return this.renderColorValue(value, label);
         case '2':
             return this.renderImageValue(value, label);
         default:
-            return this.renderStringValue(label || __('N/A'));
+            return this.renderStringValue(labelText || __('N/A'), labelText, count);
         }
     }
 
@@ -195,7 +202,7 @@ export class ProductAttributeValue extends PureComponent {
 
         const style = {
             '--option-background-color': color,
-            '--option-border-color': isLight ? '#000' : color,
+            '--option-border-color': isLight ? '#dddddd' : color,
             '--option-check-mark-background': isLight ? '#000' : '#fff',
             // stylelint-disable-next-line value-keyword-case
             '--option-is-selected': isSelected ? 1 : 0
@@ -243,7 +250,7 @@ export class ProductAttributeValue extends PureComponent {
         );
     }
 
-    renderDropdown(value) {
+    renderDropdown(value, subLabel) {
         const { isSelected } = this.props;
 
         return (
@@ -253,6 +260,7 @@ export class ProductAttributeValue extends PureComponent {
               type="checkbox"
               label={ value }
               value={ value }
+              subLabel={ subLabel }
               mix={ {
                   block: 'ProductAttributeValue',
                   elem: 'Text',
@@ -263,7 +271,7 @@ export class ProductAttributeValue extends PureComponent {
         );
     }
 
-    renderStringValue(value, label) {
+    renderStringValue(value, label, count) {
         const { isFormattedAsText, isSelected } = this.props;
         const isSwatch = label;
 
@@ -272,7 +280,7 @@ export class ProductAttributeValue extends PureComponent {
         }
 
         if (!isSwatch) {
-            return this.renderDropdown(value);
+            return this.renderDropdown(value, count);
         }
 
         return (
@@ -322,7 +330,8 @@ export class ProductAttributeValue extends PureComponent {
             isAvailable,
             attribute: { attribute_code, attribute_value },
             mix,
-            isFormattedAsText
+            isFormattedAsText,
+            showProductAttributeAsLink
         } = this.props;
 
         if (attribute_code && !attribute_value) {
@@ -341,6 +350,23 @@ export class ProductAttributeValue extends PureComponent {
                 >
                     { this.renderAttributeByType() }
                 </div>
+            );
+        }
+
+        if (!showProductAttributeAsLink) {
+            return (
+                <span
+                  block="ProductAttributeValue"
+                  mods={ { isNotAvailable } }
+                  onClick={ this.clickHandler }
+                  onKeyDown={ this.clickHandler }
+                  role="link"
+                  tabIndex="-1"
+                  aria-hidden={ isNotAvailable }
+                  mix={ mix }
+                >
+                { this.renderAttributeByType() }
+                </span>
             );
         }
 

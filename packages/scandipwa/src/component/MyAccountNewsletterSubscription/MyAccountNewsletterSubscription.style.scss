@@ -18,7 +18,7 @@
         @include after-mobile {
             position: absolute;
             top: -55px;
-            right: 0;
+            inset-inline-end: 0;
         }
     }
 
@@ -26,7 +26,7 @@
         @include mobile {
             display: flex;
             justify-content: space-between;
-            margin-top: 0;
+            margin-block-start: 0;
         }
 
         > label {
@@ -35,7 +35,8 @@
             flex-direction: row-reverse;
 
             .input-control {
-                margin: 0 12px 0 0;
+                margin-block: 0;
+                margin-inline: 0 12px;
             }
         }
     }

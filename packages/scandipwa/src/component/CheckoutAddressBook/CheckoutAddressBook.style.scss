@@ -10,29 +10,27 @@
  */
 
 .CheckoutAddressBook {
-    margin: 2.4rem 0;
+    margin: 24px 0;
     width: 100%;
 
     @include mobile {
-        margin: 2.8rem 0;
+        margin: 28px 0;
     }
 
     &-Wrapper {
-        display: flex;
-        flex-wrap: wrap;
-    }
 
-    &-CustomAddressWrapper {
-        margin: 2.4rem 0;
-
-        @include mobile {
-
-            margin: 1.4rem 0;
+        @include wide-desktop {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 40px;
         }
     }
 
+    &-CustomAddressWrapper {
+        margin: 14px 0;
+    }
+
     & &-Button {
-        display: block;
 
         @include before-desktop {
             width: 100%;
@@ -40,6 +38,19 @@
 
         &_isCustomAddressExpanded {
             display: none;
+        }
+    }
+
+    .FieldForm-Fields {
+
+        @include wide-desktop {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 32px;
+
+            > *:last-child:nth-child(odd) {
+                grid-column: span 2;
+            }
         }
     }
 }

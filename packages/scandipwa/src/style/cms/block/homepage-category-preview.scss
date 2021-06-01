@@ -16,32 +16,32 @@
 
 .HomepageCategories {
     @include desktop {
-        grid-gap: 1.2rem;
+        grid-gap: 12px;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        margin-top: 3px;
+        margin-block-start: 3px;
     }
 
     &-Figure {
-        margin-top: 1.2rem;
+        margin-block-start: 12px;
 
         @include mobile {
-            margin-top: 1.4rem;
+            margin-block-start: 14px;
         }
 
         @include after-mobile {
-            margin-top: 5px;
+            margin-block-start: 5px;
             height: 400px;
         }
 
         .Image {
             height: 100%;
             display: block;
-            padding-bottom: 0;
+            padding-block-end: 0;
 
             @include mobile {
                 height: 0;
-                padding-bottom: 56.5%;
+                padding-block-end: 56.5%;
             }
 
             &-Image {
@@ -67,13 +67,13 @@
         @include after-mobile {
             position: absolute;
             top: 50%;
-            left: 50%;
+            inset-inline-start: 50%;
             transform: translate(-50%, 0);
             text-align: center;
         }
 
         &_isPlaceholder {
-            padding-bottom: 31px;
+            padding-block-end: 31px;
         }
     }
 
@@ -81,7 +81,7 @@
         font-weight: 300;
 
         @include mobile {
-            text-align: left;
+            text-align: start;
             width: 100%;
         }
     }

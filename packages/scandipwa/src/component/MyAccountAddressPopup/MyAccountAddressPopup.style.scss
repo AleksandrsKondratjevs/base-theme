@@ -11,16 +11,29 @@
 
 .MyAccountAddressPopup {
     &-Address {
-        margin: 1.2rem 0;
+        margin: 12px 0;
 
         @include mobile {
-            margin: 1.4rem 0;
+            margin: 14px 0;
         }
     }
 
     .Button {
         @include mobile {
             width: 100%;
+        }
+    }
+
+
+    .Field {
+        &-CheckboxLabel {
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+
+            .input-control {
+                margin-inline-end: 11px;
+                margin-inline-start: 0;
+            }
         }
     }
 }

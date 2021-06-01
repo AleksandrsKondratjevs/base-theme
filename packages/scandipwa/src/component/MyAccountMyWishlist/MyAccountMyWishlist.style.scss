@@ -14,15 +14,15 @@
 }
 
 .MyAccountMyWishlist {
-    --myaccount-wihslist-products-margin-bottom: 0;
+    --myaccount-wihslist-products-margin-block-end: 0;
 
     &-Products {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-auto-rows: max-content;
-        grid-column-gap: 2.4rem;
+        grid-column-gap: 24px;
 
-        @media (min-width: 1370px) {
+        @media (min-width: 17px) {
             grid-template-columns: repeat(4, 1fr);
         }
 
@@ -31,7 +31,7 @@
         }
 
         @include mobile {
-            grid-column-gap: 2.8rem;
+            grid-column-gap: 28px;
             grid-template-columns: 1fr;
             border: 0;
             margin: 0 calc(-1 * var(--my-account-wrapper-padding-mobile));
@@ -42,27 +42,27 @@
         }
 
         @include before-desktop {
-            margin-bottom: var(--myaccount-wihslist-products-margin-bottom);
+            margin-block-end: var(--myaccount-wihslist-products-margin-bottom);
         }
     }
 
     &-ActionBar {
         display: flex;
-        padding: 0 0 1.2rem;
+        padding: 0 0 12px;
         justify-content: flex-end;
 
         @include after-mobile {
             position: absolute;
             top: -55px;
-            right: 0;
+            inset-inline-end: 0;
         }
 
         @include mobile {
             background-color: var(--my-account-content-background);
             bottom: var(--navigation-tabs-height);
             display: block;
-            left: 0;
-            padding: 1.4rem 1.4rem;
+            inset-inline-start: 0;
+            padding: 14px 14px;
             position: fixed;
             width: 100%;
         }
@@ -71,25 +71,42 @@
     &-ActionBarActionWrapper {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 10px;
+        margin-block-end: 10px;
     }
 
     &-NoProductsButton {
-        margin-top: 1.2rem;
+        margin-block-start: 12px;
 
         @include mobile {
-            margin-top: 1.4rem;
+            margin-block-start: 14px;
         }
     }
 
     &-Button {
         @include after-mobile {
-            margin-right: 1rem;
+            margin-inline-end: 30px;
+            margin-inline-start: 30px;
         }
 
         @include mobile {
             width: 100%;
         }
+    }
+
+    &-MinicartIcon {
+        @include minicart-button;
+        filter: invert(100%);
+        height: 20px;
+        margin-inline-end: 14px;
+        width: 18px;
+    }
+
+    &-ShareIcon {
+        @include share-icon;
+        filter: var(--primary-base-filter);
+        height: 20px;
+        margin-inline-end: 14px;
+        width: 18px;
     }
 
     &-ClearRemoveItemsButton {
@@ -108,7 +125,7 @@
 
         @include after-mobile {
             order: 1;
-            margin-left: 15px;
+            margin-inline-start: 15px;
         }
 
         &,
@@ -123,10 +140,9 @@
     }
 
     &-ShareWishlistButton {
-        @include share-button;
-
         height: 0;
-        margin: 1.4rem 2rem 0 0;
+        margin-block: 14px 0;
+        margin-inline: 0 20px;
 
         &[disabled] {
             @include button-disabled();

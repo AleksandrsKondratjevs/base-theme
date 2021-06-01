@@ -11,23 +11,23 @@
 
 .ProductCompareAttributeRow {
     display: flex;
-    margin-top: 1rem;
-    font-size: 1.4rem;
+    margin-block-start: 10px;
+    font-size: 14px;
 
     @include mobile {
         display: block;
-        margin: 1rem 0;
+        margin: 10px 0;
     }
 
     &-Title {
         flex: 0 0 auto;
         width: var(--product-compare-sidebar-width);
         position: sticky;
-        left: 0;
+        inset-inline-start: 0;
         font-weight: 700;
 
         @include mobile {
-            padding: 1rem;
+            padding: 10px;
             white-space: nowrap;
         }
 
@@ -47,7 +47,7 @@
         width: var(--product-compare-column-width);
 
         &:last-child {
-            padding-right: 0;
+            padding-inline-end: 0;
         }
     }
 }
